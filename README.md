@@ -34,3 +34,32 @@ gcc -o server server.c -lssl -lcrypto
 gcc -o client client.c -lssl -lcrypto
 ./server
 ./client
+
+========================for mTLS no  Ver============
+
+mTLS mutual but not ver:
+# Generate a private key for the server
+openssl genpkey -algorithm RSA -out server.key
+
+# Generate a Certificate Signing Request (CSR) for the server
+openssl req -new -key server.key -out server.csr
+
+# Generate a self-signed certificate for the server (valid for 365 days)
+openssl x509 -req -in server.csr -signkey server.key -out server.crt -days 365
+
+
+Client:
+# Generate a private key for the client
+openssl genpkey -algorithm RSA -out client.key
+
+# Generate a Certificate Signing Request (CSR) for the client
+openssl req -new -key client.key -out client.csr
+
+# Generate a self-signed certificate for the client (valid for 365 days)
+openssl x509 -req -in client.csr -signkey client.key -out client.crt -days 365
+
+
+gcc -o server server.c -lssl -lcrypto
+
+gcc -o client client.c -lssl -lcrypto
+
